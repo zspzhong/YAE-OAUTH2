@@ -9,8 +9,7 @@
             "baseurl": "http://127.0.0.1/svc",
             "workerno": 1,
             "applications": [
-                "framework",
-                "shop-admin"
+                "oauth2"
             ]
         }
     ],

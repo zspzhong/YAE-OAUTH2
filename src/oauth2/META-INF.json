@@ -1,0 +1,38 @@
+{
+    "interface": {
+        "services": {
+
+        },
+        "sdk": {
+
+        },
+        "url": {
+
+        },
+        "fragment": {
+
+        }
+    },
+    "initial": {
+        "name": "initial",
+        "impl": "oauthBoostrap.initial",
+        "comment": ""
+    },
+    "services": [
+
+    ],
+    "statics": [
+        {
+            "name": "oauth2",
+            "path": "/oauth2",
+            "comment": "认证服务"
+        }
+    ],
+    "dataModelSchema": [
+    ],
+    "configuration": {
+
+    },
+    "errorHandler": [
+    ]
+}
