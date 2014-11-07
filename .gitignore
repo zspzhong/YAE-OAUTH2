@@ -1,0 +1,17 @@
+.idea
+.git
+node_modules
+logs
+.build
+frontend
+webapps
+sea_modules
+*.diff
+*.patch
+*.bak
+Thumbs.db
+YAE
+apk
+*.log
+*.dylib
+bower_components

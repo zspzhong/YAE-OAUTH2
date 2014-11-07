@@ -1,0 +1,42 @@
+{
+    "env": "dev",
+    "cluster": [
+        {
+            "name": "baseService",
+            "ip": "",
+            "port": 5001,
+            "protocol": "http",
+            "baseurl": "http://127.0.0.1/svc",
+            "workerno": 1,
+            "applications": [
+                "framework",
+                "shop-admin"
+            ]
+        }
+    ],
+    "dataServer": {
+        "mysql": {
+            "ip": "yilosdev.mysql.rds.aliyuncs.com",
+            "port": 3306,
+            "user": "yilos_dev",
+            "password": "yilos_dev"
+        },
+        "mongodb": {
+            "ip": "127.0.0.1",
+            "port": "27017",
+            "connectionurl": "127.0.0.1:27017",
+            "user": "",
+            "password": ""
+        }
+    },
+    "clientAccess": {
+        "staticurl": "",
+        "authurl": "",
+        "serviceurl": "",
+        "uploadurl": ""
+    },
+    "connector":{
+        "nail_pc_url":""
+    },
+    "ip-whitelist": []
+}
