@@ -15,6 +15,11 @@ function initial(app, clusterConfig) {
         debug: true
     });
 
+
+    app.get('/', app.oauth.authorise(), function (req, res) {
+        res.send('Secret area');
+    });
+
     // Handle token grant requests
     app.all('/oauth/token', app.oauth.grant());
 

@@ -49,7 +49,7 @@ model.getAccessToken = function (bearerToken, callback) {
         });
         done();
     });
-d};
+};
 
 model.getClient = function (clientId, clientSecret, callback) {
     dbHelper.execSql('SELECT client_id, client_secret, redirect_uri FROM oauth_clients WHERE ' +
