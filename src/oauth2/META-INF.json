@@ -21,6 +21,12 @@
     "services": [
 
     ],
+    "ejsviews": [
+        {
+            "dir": "/ejs",
+            "comment": ""
+        }
+    ],
     "statics": [
         {
             "name": "oauth2",

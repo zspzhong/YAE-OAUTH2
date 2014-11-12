@@ -1,0 +1,7 @@
+<form action="/oauth/authorise" method="post">
+    <input type="text" name="response_type" id="response_type" value="code"/>
+
+    <input type="text" name="client_id" id="client_id" value="<%= client_id%>"/>
+    <input type="text" name="redirect_uri" id="redirect_uri" value="<%= redirect_uri%>"/>
+    <input type="submit" value="登陆"/>
+</form>

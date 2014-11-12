@@ -21,6 +21,9 @@ var dbHelper = require(FRAMEWORKPATH + "/utils/dbHelper"),
 // it gives an example of how to use the method to resrict certain grant types
 var authorizedClientIds = ['abc1', 'def2'];
 model.grantTypeAllowed = function (clientId, grantType, callback) {
+
+    console.log("authorizedClientIds");
+
     if (grantType === 'password') {
         return callback(false, authorizedClientIds.indexOf(clientId.toLowerCase()) >= 0);
     }
@@ -33,68 +36,64 @@ model.grantTypeAllowed = function (clientId, grantType, callback) {
  */
 
 model.getAccessToken = function (bearerToken, callback) {
-    dbHelper.execSql('SELECT access_token, client_id, expires, user_id FROM oauth_access_tokens ' +
+    dbHelper.execSql('SELECT access_token, client_id, expires, user_id FROM planx_graph.tb_oauth_access_tokens ' +
         'WHERE access_token = :access_token', {access_token:bearerToken}, function (err, result) {
-        if (err || !result.rowCount) return callback(err);
+        if (err || !result.length) return callback(err);
         // This object will be exposed in req.oauth.token
         // The user_id field will be exposed in req.user (req.user = { id: "..." }) however if
         // an explicit user object is included (token.user, must include id) it will be exposed
         // in req.user instead
-        var token = result.rows[0];
+        var token = result[0];
         callback(null, {
             accessToken: token.access_token,
             clientId: token.client_id,
             expires: token.expires,
             userId: token.userId
         });
-        done();
     });
 };
 
 model.getClient = function (clientId, clientSecret, callback) {
-    dbHelper.execSql('SELECT client_id, client_secret, redirect_uri FROM oauth_clients WHERE ' +
+    dbHelper.execSql('SELECT client_id, client_secret, redirect_uri FROM planx_graph.tb_oauth_clients WHERE ' +
             'client_id = :client_id', {client_id:clientId}, function (err, result) {
-            if (err || !result.rowCount) return callback(err);
+            if (err || !result.length) return callback(err);
 
-            var client = result.rows[0];
+            var client = result[0];
 
             if (clientSecret !== null && client.client_secret !== clientSecret) return callback();
 
             // This object will be exposed in req.oauth.client
             callback(null, {
                 clientId: client.client_id,
-                clientSecret: client.client_secret
+                clientSecret: client.client_secret,
+                redirectUri: client.redirect_uri
             });
-            done();
         });
 };
 
 model.getRefreshToken = function (bearerToken, callback) {
-    dbHelper.execSql('SELECT refresh_token, client_id, expires, user_id FROM oauth_refresh_tokens ' +
+    dbHelper.execSql('SELECT refresh_token, client_id, expires, user_id FROM planx_graph.tb_oauth_refresh_tokens ' +
         'WHERE refresh_token = :refresh_token', {refresh_token:bearerToken}, function (err, result) {
         // The returned user_id will be exposed in req.user.id
-        callback(err, result.rowCount ? result.rows[0] : false);
-        done();
+        callback(err, result.length ? result[0] : false);
     });
 };
 
 
 
 model.saveAccessToken = function (accessToken, clientId, expires, userId, callback) {
-    dbHelper.execSql('INSERT INTO oauth_access_tokens(access_token, client_id, user_id, expires) ' +
+    dbHelper.execSql('INSERT INTO planx_graph.tb_oauth_access_tokens(access_token, client_id, user_id, expires) ' +
         'VALUES (:access_token, :client_id, :user_id, :expires)', {access_token:accessToken, client_id:clientId, user_id:userId, expires:expires},
         function (err, result) {
             callback(err);
-            done();
         });
 };
 
 model.saveRefreshToken = function (refreshToken, clientId, expires, userId, callback) {
-    dbHelper.execSql('INSERT INTO oauth_refresh_tokens(refresh_token, client_id, user_id, ' +
+    dbHelper.execSql('INSERT INTO planx_graph.tb_oauth_refresh_tokens(refresh_token, client_id, user_id, ' +
         'expires) VALUES (:refresh_token, :client_id, :user_id,:expires', {refresh_token:refreshToken, client_id:clientId, user_id:userId, expires:expires},
         function (err, result) {
             callback(err);
-            done();
         });
 };
 
@@ -102,9 +101,8 @@ model.saveRefreshToken = function (refreshToken, clientId, expires, userId, call
  * Required to support password grant type
  */
 model.getUser = function (username, password, callback) {
-    dbHelper.execSql('SELECT id FROM users WHERE username = :username AND password = :password', {username:username,
+    dbHelper.execSql('SELECT id FROM planx_graph.tb_users WHERE username = :username AND password = :password', {username:username,
         password:password}, function (err, result) {
-        callback(err, result.rowCount ? result.rows[0] : false);
-        done();
+        callback(err, result.length ? result[0] : false);
     });
 };
