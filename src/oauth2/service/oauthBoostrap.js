@@ -27,7 +27,7 @@ function initial(app, clusterConfig) {
     app.get('/oauth/authorise', function (req, res, next) {
         if (!req.session || !req.session.user) {
             // If they aren't logged in, send them to your own login implementation
-            return res.redirect('/login?redirect=' + req.path + '&client_id=' +
+            return res.redirect('/oauth/login?redirect=' + req.path + '&client_id=' +
                 req.query.client_id + '&redirect_uri=' + req.query.redirect_uri);
         }
 
@@ -40,7 +40,7 @@ function initial(app, clusterConfig) {
 // Handle authorise
     app.post('/oauth/authorise', function (req, res, next) {
         if (!req.session.user) {
-            return res.redirect('/login?client_id=' + req.query.client_id +
+            return res.redirect('/oauth/login?client_id=' + req.query.client_id +
                 '&redirect_uri=' + req.query.redirect_uri);
         }
 
@@ -53,7 +53,7 @@ function initial(app, clusterConfig) {
     }));
 
 // Show login
-    app.get('/login', function (req, res, next) {
+    app.get('/oauth/login', function (req, res, next) {
         res.render('login', {
             redirect: req.query.redirect,
             client_id: req.query.client_id,
@@ -62,7 +62,7 @@ function initial(app, clusterConfig) {
     });
 
 // Handle login
-    app.post('/login', function (req, res, next) {
+    app.post('/oauth/login', function (req, res, next) {
 
         // Insert your own login mechanism
         if (req.body.email == 'thom@nightworld.com') {
