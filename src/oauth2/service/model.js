@@ -106,3 +106,14 @@ model.getUser = function (username, password, callback) {
         callback(err, result.length ? result[0] : false);
     });
 };
+
+model.saveAuthCode = function(authCode, clientId, expires,
+    user,callback){
+
+    console.log(authCode);
+    console.log(clientId);
+    console.log(expires);
+    console.log(user);
+
+    callback(null);
+}

@@ -11,7 +11,7 @@ var oauthserver = require('oauth2-server');
 function initial(app, clusterConfig) {
     app.oauth = oauthserver({
         model: require('./model'), // See below for specification
-        grants: ['password'],
+        grants: ['password','auth_code'],
         debug: true
     });
 

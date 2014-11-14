@@ -1,4 +1,4 @@
-<form action="/login" method="post">
+<form action="/oauth/login" method="post">
     <input type="text" name="username" id="username"/>
     <input type="password" name="username" id="password"/>
     <input type="hidden" name="redirect" id="redirect" value="<%= redirect%>"/>
@@ -6,3 +6,9 @@
     <input type="hidden" name="redirect_uri" id="redirect_uri" value="<%= redirect_uri%>"/>
     <input type="submit" value="登陆"/>
 </form>
+<script>
+    //校验不能输入空,提交服务，服务器请求认证中心密码认证，认证获取token后返回客户端，客户端保存token，每次请求使用token请求
+    //请求grant_type=password&client_id=s6BhdRkqt3&client_secret=47HDu8s&username=johndoe&password=A3ddj3w
+    //保存token到后台session
+    //每次请求使用保存的token进行请求
+</script>
