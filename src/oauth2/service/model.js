@@ -19,10 +19,8 @@ var dbHelper = require(FRAMEWORKPATH + "/utils/dbHelper"),
 
 // This will very much depend on your setup, I wouldn't advise doing anything exactly like this but
 // it gives an example of how to use the method to resrict certain grant types
-var authorizedClientIds = ['abc1', 'def2'];
+var authorizedClientIds = ['chain', 'def2'];
 model.grantTypeAllowed = function (clientId, grantType, callback) {
-
-    console.log("authorizedClientIds");
 
     if (grantType === 'password') {
         return callback(false, authorizedClientIds.indexOf(clientId.toLowerCase()) >= 0);
@@ -75,6 +73,8 @@ model.getRefreshToken = function (bearerToken, callback) {
     dbHelper.execSql('SELECT refresh_token, client_id, expires, user_id FROM planx_graph.tb_oauth_refresh_tokens ' +
         'WHERE refresh_token = :refresh_token', {refresh_token:bearerToken}, function (err, result) {
         // The returned user_id will be exposed in req.user.id
+
+        donsole.log( result[0]);
         callback(err, result.length ? result[0] : false);
     });
 };
@@ -83,7 +83,7 @@ model.getRefreshToken = function (bearerToken, callback) {
 
 model.saveAccessToken = function (accessToken, clientId, expires, userId, callback) {
     dbHelper.execSql('INSERT INTO planx_graph.tb_oauth_access_tokens(access_token, client_id, user_id, expires) ' +
-        'VALUES (:access_token, :client_id, :user_id, :expires)', {access_token:accessToken, client_id:clientId, user_id:userId, expires:expires},
+        'VALUES (:access_token, :client_id, :user_id, :expires)', {access_token:accessToken, client_id:clientId, user_id:userId, expires:expires.getTime()},
         function (err, result) {
             callback(err);
         });
@@ -91,7 +91,7 @@ model.saveAccessToken = function (accessToken, clientId, expires, userId, callba
 
 model.saveRefreshToken = function (refreshToken, clientId, expires, userId, callback) {
     dbHelper.execSql('INSERT INTO planx_graph.tb_oauth_refresh_tokens(refresh_token, client_id, user_id, ' +
-        'expires) VALUES (:refresh_token, :client_id, :user_id,:expires', {refresh_token:refreshToken, client_id:clientId, user_id:userId, expires:expires},
+        'expires) VALUES (:refresh_token, :client_id, :user_id,:expires', {refresh_token:refreshToken, client_id:clientId, user_id:userId, expires:expires.getTime()},
         function (err, result) {
             callback(err);
         });
@@ -101,19 +101,9 @@ model.saveRefreshToken = function (refreshToken, clientId, expires, userId, call
  * Required to support password grant type
  */
 model.getUser = function (username, password, callback) {
-    dbHelper.execSql('SELECT id FROM planx_graph.tb_users WHERE username = :username AND password = :password', {username:username,
-        password:password}, function (err, result) {
-        callback(err, result.length ? result[0] : false);
+    var sql = 'SELECT * FROM planx_graph.tb_users WHERE username = :username AND password = :password';
+    dbHelper.execSql(sql, {username:username,password:password},
+        function (err, result) {
+        callback(err, result.length ? result[0].username : false);
     });
 };
-
-model.saveAuthCode = function(authCode, clientId, expires,
-    user,callback){
-
-    console.log(authCode);
-    console.log(clientId);
-    console.log(expires);
-    console.log(user);
-
-    callback(null);
-}

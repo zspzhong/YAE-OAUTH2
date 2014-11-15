@@ -12,14 +12,9 @@ function initial(app, clusterConfig) {
     app.oauth = oauthserver({
         model: require('./model'), // See below for specification
         grants: ['password','auth_code'],
+        accessTokenLifetime:1*60*1000,
         debug: true
     });
-
-
-    app.get('/', app.oauth.authorise(), function (req, res) {
-        res.send('Secret area');
-    });
-
     // Handle token grant requests
     app.all('/oauth/token', app.oauth.grant());
 
@@ -78,16 +73,6 @@ function initial(app, clusterConfig) {
             return res.redirect((req.body.redirect || '/home') + '?client_id=' +
                 req.body.client_id + '&redirect_uri=' + req.body.redirect_uri);
         }
-    });
-
-    app.get('/secret', app.oauth.authorise(), function (req, res) {
-        // Will require a valid access_token
-        res.send('Secret area');
-    });
-
-    app.get('/public', function (req, res) {
-        // Does not require an access_token
-        res.send('Public area');
     });
 
 
