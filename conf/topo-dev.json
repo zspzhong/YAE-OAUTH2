@@ -4,7 +4,7 @@
         {
             "name": "baseService",
             "ip": "",
-            "port": 5000,
+            "port": 5001,
             "protocol": "http",
             "baseurl": "http://127.0.0.1/svc",
             "workerno": 1,
@@ -26,6 +26,12 @@
             "connectionurl": "127.0.0.1:27017",
             "user": "",
             "password": ""
+        },
+        "chainmysql": {
+            "ip": "yilosdev.mysql.rds.aliyuncs.com",
+            "port": 3306,
+            "user": "yilos_dev",
+            "password": "yilos_dev"
         }
     },
     "clientAccess": {
